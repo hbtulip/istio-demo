@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-v1
+spec:
+  selector:
+    matchLabels:
+      app: website
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: website
+        version: website-version-1
+    spec:
+      containers:
+      - name: website-version-1
+        image: aquamarine/kublr-tutorial-images:v1
+        resources:
+          requests:
+            cpu: 0.1
+            memory: 200
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-v2
+spec:
+  selector:
+    matchLabels:
+      app: website
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: website
+        version: website-version-2
+    spec:
+      containers:
+      - name: website-version-2
+        image: aquamarine/kublr-tutorial-images:v2
+        resources:
+          requests:
+            cpu: 0.1
+            memory: 200
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-v3
+spec:
+  selector:
+    matchLabels:
+      app: website
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: website
+        version: website-version-3
+    spec:
+      containers:
+      - name: website-version-3
+        image: aquamarine/kublr-tutorial-images:v3
+        resources:
+          requests:
+            cpu: 0.1
+            memory: 200
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: website
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: website
+
