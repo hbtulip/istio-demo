@@ -1,12 +1,13 @@
 # istio-demo
 
-Istio 是一个开源的Service Mesh实现，是新的微服务技术，它与我们熟悉的微服务框架Dubbo在实际使用上有什么不同呢？我们来初步体验一下istio的服务注册、发现、调用及路由功能。
+Istio 是一个开源的Service Mesh实现，是新的微服务技术，它与我们熟悉的微服务框架Dubbo在实际使用上有什么不同呢？<br>
+我们来初步体验一下istio的服务注册、发现、调用及路由功能。
 
 ----
 
 ## Service Mesh／Istio
 
-Service Mesh（服务网格）号称下一代微服务技术，通过将基础设施下沉，实现抽离微服务中的通用功能，比如：服务注册发现、负载均衡、降级熔断、限流扩容、认证授权、日志监控等功能，将这些功能放到sidercar中，通过网路层轻量级代理的方式，将基础设施和业务服务解耦。
+Service Mesh（服务网格）号称下一代微服务技术，通过将基础设施下沉，实现抽离微服务中的通用功能，比如：服务注册发现、负载均衡、降级熔断、限流扩容、认证授权、日志监控等功能，将这些功能放到sidercar中，基于网路层轻量级代理的方式，将基础设施和业务服务解耦。
 
 Istio是一个热门的Service Mesh开源实现，一般情况我们将它与k8s集群结合使用。
 
@@ -59,9 +60,9 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 
 #### 2、服务注册发现
 
-在传统的Dubbo中，采用的是“客户端嵌入式代理方式”，需要通过独立的服务注册中心配合，服务启动时自动注册到注册中心，客户端代理则发现服务并做负载均衡和调用。Istio采用的是“主机独立进程代理”，无需注册中心，由独立代理（Kube-proxy/istio-proxy）实现服务发现和负载均衡.
+在传统的微服务框架Dubbo中，采用的是“客户端嵌入式代理方式”，需要通过独立的服务注册中心（如：Zookeeper）配合，服务启动时自动注册到注册中心，客户端代理则发现服务并做负载均衡和调用。Istio采用的是“主机独立进程代理”，无需注册中心，由独立代理（Kube-proxy/istio-proxy）实现服务发现和负载均衡.
 
-各个服务的注册发现均基于k8s集群内的服务解析。以Ratings为例，服务实现samples/bookinfo/src/ratings/ratings.js中，通过samples/bookinfo/platform/kube/bookinfo-ratings.yaml发布中k8s集群。
+各个服务的注册发现均基于k8s集群内的服务解析。以Ratings为例，服务实现samples/bookinfo/src/ratings/ratings.js中，通过samples/bookinfo/platform/kube/bookinfo-ratings.yaml发布到k8s集群。
 
 ```yaml
 # Ratings service
@@ -102,7 +103,7 @@ dispatcher.onGet(/^\/ratings\/[0-9]*/, function (req, res) {
 
 Bookinfo的服务间通过HTTP通讯。以Java开发的微服务Reviews调用Ratings为例，Reviews通过GET ratings(.default.svc.cluster.local):9080/ratings/{productId}访问Ratings，得到某个特定产品的评分。
 
-在代码samples/bookinfo/src/reviews/reviews-application/src/main/java/application/rest/LibertyRestEndpoint.java中，有调用服务Ratings的实现。我并未发现对环境变量RATINGS_HOSTNAME的赋值，同一命名空间服务地址应为http://ratings:9080/ratings／{productId}
+在代码samples/bookinfo/src/reviews/reviews-application/src/main/java/application/rest/LibertyRestEndpoint.java中有调用服务Ratings的实现。同时我并未发现对环境变量RATINGS_HOSTNAME的赋值，同一命名空间服务地址应为http://ratings:9080/ratings／{productId}
 
 ```java
     //private final static String ratings_hostname = System.getenv("RATINGS_HOSTNAME") == null ? "ratings" : System.getenv("RATINGS_HOSTNAME");
