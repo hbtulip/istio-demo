@@ -120,8 +120,7 @@ Bookinfo的服务间通过HTTP通讯。以Java开发的微服务Reviews调用Rat
 
 ## 服务路由选择
 
-在浏览器访问 [http://www.hmxq.top:30980/](http://www.hmxq.top:30980/ " ")，
-多刷新几次，可以看到绿、蓝、橙的不同版本页面。
+在浏览器访问 http://www.hmxq.top:30124/，多刷新几次，可以看到绿、蓝、橙的不同版本页面。
 
 ```bash
 wget https://github.com/istio/istio/releases/download/1.6.4/istio-1.6.4-linux-amd64.tar.gz
