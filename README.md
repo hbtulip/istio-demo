@@ -7,7 +7,7 @@ Istio 是一个开源的Service Mesh实现，是新的微服务技术，它与�
 
 ## Service Mesh／Istio
 
-Service Mesh（服务网格）号称下一代微服务技术，通过将基础设施下沉，实现抽离微服务中的通用功能，比如：服务注册发现、负载均衡、降级熔断、限流扩容、认证授权、日志监控等功能，将这些功能放到sidercar中，基于网路层轻量级代理的方式，将基础设施和业务服务解耦。
+Service Mesh（服务网格）号称下一代微服务技术，通过将网络通讯层基础设施下沉，实现抽离微服务中的通用功能，比如：服务注册发现、负载均衡、降级熔断、限流扩容、认证授权、日志监控等功能，将这些功能放到sidercar中，基于网路层轻量级代理的方式，将基础设施和业务服务解耦。
 
 Istio是一个热门的Service Mesh开源实现，一般情况我们将它与k8s集群结合使用。
 
@@ -56,7 +56,7 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 
 #### 1、部署脚本
 
-部署脚本即samples/bookinfo/platform/kube/bookinfo.yaml，可以看到里面定义的均为标准Kubernetes的Deployment和Service对象。为当前namespace开启启sidecar自动注入后，我们创建的每个pod中均自动创建	istio-proxy容器。
+部署脚本即samples/bookinfo/platform/kube/bookinfo.yaml，可以看到里面定义的均为标准Kubernetes的Deployment和Service对象。为当前namespace开启sidecar自动注入后，我们创建的每个pod中均自动创建	istio-proxy容器。
 
 #### 2、服务注册发现
 
@@ -101,13 +101,14 @@ dispatcher.onGet(/^\/ratings\/[0-9]*/, function (req, res) {
 
 #### 3、服务间调用
 
-Bookinfo的服务间通过HTTP通讯。以Java开发的微服务Reviews调用Ratings为例，Reviews通过GET ratings(.default.svc.cluster.local):9080/ratings/{productId}访问Ratings，得到某个特定产品的评分。
+Bookinfo的服务间通过HTTP通讯。以Java开发的微服务Reviews调用Python开发的Ratings为例，Reviews通过GET ratings(.default.svc.cluster.local):9080/ratings/{productId}访问Ratings，得到某个特定产品的评分。
 
 在代码samples/bookinfo/src/reviews/reviews-application/src/main/java/application/rest/LibertyRestEndpoint.java中有调用服务Ratings的实现。同时我并未发现对环境变量RATINGS_HOSTNAME的赋值，同一命名空间服务地址应为http://ratings:9080/ratings／{productId}
 
 ```java
-    //private final static String ratings_hostname = System.getenv("RATINGS_HOSTNAME") == null ? "ratings" : System.getenv("RATINGS_HOSTNAME");
-    //private final static String ratings_service = "http://" + ratings_hostname + services_domain + ":9080/ratings";
+ private final static String services_domain = System.getenv("SERVICES_DOMAIN") == null ? "" : ("." + System.getenv("SERVICES_DOMAIN"));
+ private final static String ratings_hostname = System.getenv("RATINGS_HOSTNAME") == null ? "ratings" : System.getenv("RATINGS_HOSTNAME");
+ private final static String ratings_service = "http://" + ratings_hostname + services_domain + ":9080/ratings";
 
  private JsonObject getRatings(String productId, HttpHeaders requestHeaders) {
       //...
