@@ -30,7 +30,7 @@ Bookinfo项目涉及4个独立的微服务：<br>
 
 传统部署方式：
 
-[comment]: <> ( ![](https://istio.io/latest/zh/docs/examples/bookinfo/noistio.svg "传统部署方式")  )
+<!-- ![](https://istio.io/latest/zh/docs/examples/bookinfo/noistio.svg "传统部署方式")  -->
 
 ![](https://www.hmxq.top/istio-demo/bookinfo-noistio.svg "传统部署方式")
 
@@ -60,11 +60,13 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 
 部署脚本即samples/bookinfo/platform/kube/bookinfo.yaml，可以看到里面定义的均为标准Kubernetes的Deployment和Service对象。为当前namespace开启sidecar自动注入后，我们创建的每个pod中均自动创建	istio-proxy容器。
 
+![](https://www.hmxq.top/istio-demo/istio-k8s2.png " ")
+
 #### 2、服务注册发现
 
 在传统的微服务框架Dubbo中，采用的是“客户端嵌入式代理方式”，需要通过独立的服务注册中心（如：Zookeeper）配合，服务启动时自动注册到注册中心，客户端代理则发现服务并做负载均衡和调用。Istio采用的是“主机独立进程代理”，无需注册中心（还是需要k8s集群中etcd的支持），由独立代理（istio-proxy|Kube-proxy）实现服务发现和负载均衡.
 
-Istio在k8s平台的服务发现和配置示意图：
+Istio在k8s平台的服务发现和配置机制：
 
 ![](https://www.hmxq.top/istio-demo/istio-k8s.png " ")
 
