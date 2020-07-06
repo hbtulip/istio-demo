@@ -13,8 +13,12 @@ Istio是一个热门的Service Mesh开源实现，一般情况我们将它与k8s
 
 它具有以下两种功能组：
 
-- 控制平面：是一系列管理配置和监测数据平面的Istio服务(istiod)
+- 控制平面：是一系列管理配置和监测数据平面的Istio服务(istiod)，主要包括Pilot、Mixer、Citadel等组件；
 - 数据平面：由应用Pod中的Istio代理sidecar组成(基于Envoy)。这些代理会处理服务网格中微服务之间的网络连接，从控制平面接收微服务的路由和策略规则，并向控制平面报告连接被处理的结果。
+
+Istio 的主要组件及其相互关系：
+
+![](https://www.hmxq.top/istio-demo/istio.png " ")
 
 ## 服务的注册、发现和调用
 
@@ -58,15 +62,18 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 
 #### 1、部署脚本
 
-部署脚本即samples/bookinfo/platform/kube/bookinfo.yaml，可以看到里面定义的均为标准Kubernetes的Deployment和Service对象。为当前namespace开启sidecar自动注入后，我们创建的每个pod中均自动创建	istio-proxy容器。
+部署脚本即samples/bookinfo/platform/kube/bookinfo.yaml，可以看到里面定义的均为标准Kubernetes的Deployment和Service对象。为当前namespace开启sidecar自动注入后，我们创建的每个pod中均自动创建istio-proxy容器。
 
 ![](https://www.hmxq.top/istio-demo/istio-k8s2.png " ")
 
 #### 2、服务注册发现
 
-在传统的微服务框架Dubbo中，采用的是“客户端嵌入式代理方式”，需要通过独立的服务注册中心（如：Zookeeper）配合，服务启动时自动注册到注册中心，客户端代理则发现服务并做负载均衡和调用。Istio采用的是“主机独立进程代理”，无需注册中心（还是需要k8s集群中etcd的支持），由独立代理（istio-proxy|Kube-proxy）实现服务发现和负载均衡.
+在传统的微服务框架Dubbo中，采用的是“客户端嵌入式代理方式”，需要通过独立的服务注册中心（如：Zookeeper）配合，服务启动时自动注册到注册中心，客户端代理则发现服务并做负载均衡和调用。
+Istio采用的是“主机独立进程代理”，无需注册中心（在k8s平台还是需要etcd的支持），由独立代理（istio-proxy|Kube-proxy）实现服务发现和负载均衡.
 
-Istio在k8s平台的服务发现和配置机制：
+Pilot 用于为 Envoy sidecar 提供服务发现，智能路由（例如 A/B 测试、金丝雀部署等）、流量管理和错误处理（超时、重试和熔断）功能。Pilot 将平台特定的服务发现机制进行抽象化，并将其合成为符合 Envoy 数据平面 API 的任何 sidecar 都可以使用的标准格式。这种松散耦合使得 Istio 能够在多种平台环境下运行（例如，Kubernetes、Consul）
+
+Istio在k8s平台的服务发现机制：
 
 ![](https://www.hmxq.top/istio-demo/istio-k8s.png " ")
 
