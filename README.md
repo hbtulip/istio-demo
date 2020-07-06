@@ -30,9 +30,9 @@ Bookinfo项目涉及4个独立的微服务：<br>
 
 传统部署方式：
 
-[comment]: ![](https://istio.io/latest/zh/docs/examples/bookinfo/noistio.svg "传统部署方式")
+[comment]: <> ( ![](https://istio.io/latest/zh/docs/examples/bookinfo/noistio.svg "传统部署方式")  )
 
-:![](https://www.hmxq.top/istio-demo/bookinfo-noistio.svg "传统部署方式")
+![](https://www.hmxq.top/istio-demo/bookinfo-noistio.svg "传统部署方式")
 
 ### 安装部署
 
