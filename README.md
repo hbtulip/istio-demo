@@ -62,7 +62,8 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 
 部署脚本即samples/bookinfo/platform/kube/bookinfo.yaml，可以看到里面定义的均为标准Kubernetes的Deployment和Service对象。为当前namespace开启sidecar自动注入后，我们创建的每个pod中均自动创建istio-proxy容器。
 
-![](https://www.hmxq.top/istio-demo/istio-k8s2.png " ")
+<!-- ![](https://www.hmxq.top/istio-demo/istio-k8s2.png " ")  -->
+<div align="left"> <img src="https://www.hmxq.top/istio-demo/istio-k8s2.png" width="60%"> </div>
 
 #### 2、服务注册发现
 
