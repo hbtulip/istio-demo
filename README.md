@@ -60,7 +60,11 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 
 #### 2、服务注册发现
 
-在传统的微服务框架Dubbo中，采用的是“客户端嵌入式代理方式”，需要通过独立的服务注册中心（如：Zookeeper）配合，服务启动时自动注册到注册中心，客户端代理则发现服务并做负载均衡和调用。Istio采用的是“主机独立进程代理”，无需注册中心，由独立代理（Kube-proxy/istio-proxy）实现服务发现和负载均衡.
+在传统的微服务框架Dubbo中，采用的是“客户端嵌入式代理方式”，需要通过独立的服务注册中心（如：Zookeeper）配合，服务启动时自动注册到注册中心，客户端代理则发现服务并做负载均衡和调用。Istio采用的是“主机独立进程代理”，无需注册中心（还是需要k8s集群中etcd的支持），由独立代理（istio-proxy|Kube-proxy）实现服务发现和负载均衡.
+
+Istio在k8s平台的服务发现和配置示意图：
+
+![示意图](istio-k8s.png)
 
 各个服务的注册发现均基于k8s集群内的服务解析。以Ratings为例，服务实现samples/bookinfo/src/ratings/ratings.js中，通过samples/bookinfo/platform/kube/bookinfo-ratings.yaml发布到k8s集群。
 
@@ -103,7 +107,7 @@ dispatcher.onGet(/^\/ratings\/[0-9]*/, function (req, res) {
 
 Bookinfo的服务间通过HTTP通讯。以Java开发的微服务Reviews调用Python开发的Ratings为例，Reviews通过GET ratings(.default.svc.cluster.local):9080/ratings/{productId}访问Ratings，得到某个特定产品的评分。
 
-在代码samples/bookinfo/src/reviews/reviews-application/src/main/java/application/rest/LibertyRestEndpoint.java中有调用服务Ratings的实现。同时我并未发现对环境变量RATINGS_HOSTNAME的赋值，同一命名空间服务地址应为http://ratings:9080/ratings／{productId}
+在代码samples/bookinfo/src/reviews/reviews-application/src/main/java/application/rest/LibertyRestEndpoint.java中有调用服务Ratings的实现。同时我并未发现对环境变量SERVICES_DOMAIN和RATINGS_HOSTNAME的赋值，同一命名空间服务地址应为http://ratings:9080/ratings/{productId}
 
 ```java
  private final static String services_domain = System.getenv("SERVICES_DOMAIN") == null ? "" : ("." + System.getenv("SERVICES_DOMAIN"));
