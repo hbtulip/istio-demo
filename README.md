@@ -30,7 +30,9 @@ Bookinfo项目涉及4个独立的微服务：<br>
 
 传统部署方式：
 
-![](https://istio.io/latest/zh/docs/examples/bookinfo/noistio.svg "传统部署方式")
+[comment]: ![](https://istio.io/latest/zh/docs/examples/bookinfo/noistio.svg "传统部署方式")
+
+:![](https://www.hmxq.top/istio-demo/bookinfo-noistio.svg "传统部署方式")
 
 ### 安装部署
 
@@ -50,7 +52,7 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 
 基于istio部署方式：
 
-![](https://istio.io/latest/zh/docs/examples/bookinfo/withistio.svg "基于istio部署方式")
+![](https://www.hmxq.top/istio-demo/bookinfo-withistio.svg "基于istio部署方式")
 
 ### 源码分析
 
@@ -64,7 +66,7 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 
 Istio在k8s平台的服务发现和配置示意图：
 
-![](./istio-k8s.png " ")
+![](https://www.hmxq.top/istio-demo/istio-k8s.png " ")
 
 各个服务的注册发现均基于k8s集群内的服务解析。以Ratings为例，服务实现samples/bookinfo/src/ratings/ratings.js中，通过samples/bookinfo/platform/kube/bookinfo-ratings.yaml发布到k8s集群。
 
@@ -143,7 +145,7 @@ kubectl label namespace my-istio-demo istio-injection=enabled
 kubectl create -f my-websites.yaml -n my-istio-demo
 #创建istio的ingressgateway 和 VirtualService
 kubectl create -f my-website-routing.yaml -n my-istio-demo
-#获取端口30980
+#获取端口
 kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}'  
 ```
 
