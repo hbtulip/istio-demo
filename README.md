@@ -17,7 +17,8 @@ Istio是一个热门的Service Mesh开源实现，一般情况我们将它与k8s
 
 Istio 的主要组件及其相互关系：
 
-![](https://www.hmxq.top/istio-demo/istio.png " ")
+<!-- ![](https://www.hmxq.top/istio-demo/istio.png " ") -->
+<div align="center"> <img src="https://www.hmxq.top/istio-demo/istio.png" width="80%"> </div>
 
 ## 服务的注册、发现和调用
 
@@ -72,7 +73,8 @@ Istio采用的是“主机独立进程代理”，无需注册中心（实际上
 
 Istio在k8s平台的服务发现机制如下：
 
-![](https://www.hmxq.top/istio-demo/istio-k8s5.png )
+<!-- ![](https://www.hmxq.top/istio-demo/istio-k8s5.png ) -->
+<div align="center"> <img src="https://www.hmxq.top/istio-demo/istio-k8s5.png" width="80%"> </div>
 
 可见Istio的服务发现机制完美地基于Kubernetes的域名访问机制构建而成，仅对服务间的通信进行治理。以Ratings为例，在服务实现samples/bookinfo/src/ratings/ratings.js中，通过samples/bookinfo/platform/kube/bookinfo-ratings.yaml发布到k8s集群。
 
