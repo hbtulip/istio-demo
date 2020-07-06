@@ -64,7 +64,7 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 
 Istio在k8s平台的服务发现和配置示意图：
 
-![示意图](istio-k8s.png)
+![](./istio-k8s.png " ")
 
 各个服务的注册发现均基于k8s集群内的服务解析。以Ratings为例，服务实现samples/bookinfo/src/ratings/ratings.js中，通过samples/bookinfo/platform/kube/bookinfo-ratings.yaml发布到k8s集群。
 
