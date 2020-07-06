@@ -69,11 +69,11 @@ kubectl exec -it $(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metada
 在传统的微服务框架Dubbo中，采用的是“客户端嵌入式代理方式”，需要通过独立的服务注册中心（如：Zookeeper）配合，服务启动时自动注册到注册中心，客户端代理则发现服务并做负载均衡和调用。
 Istio采用的是“主机独立进程代理”，无需注册中心（实际上在k8s平台还是需要etcd的支持），由Pilot实现List/Watch资源对象（Service、Endpoints、Node、Pod），并结合独立代理istio-proxy实现服务发现和负载均衡.
 
-Istio在k8s平台的服务发现机制：
+Istio在k8s平台的服务发现机制如下：
 
-![](https://www.hmxq.top/istio-demo/istio-k8s5.png 600)
+![](https://www.hmxq.top/istio-demo/istio-k8s5.png )
 
-Istio仍使用与k8s完全相同的名字服务，仅对服务间的通信进行治理。以Ratings为例，在服务实现samples/bookinfo/src/ratings/ratings.js中，通过samples/bookinfo/platform/kube/bookinfo-ratings.yaml发布到k8s集群。
+可见Istio的服务发现机制完美地基于Kubernetes的域名访问机制构建而成，仅对服务间的通信进行治理。以Ratings为例，在服务实现samples/bookinfo/src/ratings/ratings.js中，通过samples/bookinfo/platform/kube/bookinfo-ratings.yaml发布到k8s集群。
 
 ```yaml
 # Ratings service
