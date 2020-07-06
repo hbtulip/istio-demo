@@ -17,7 +17,7 @@ Istio是一个热门的Service Mesh开源实现，一般情况我们将它与k8s
 
 Istio 的主要组件及其相互关系：
 
-![](https://www.hmxq.top/istio-demo/istio.png " ") {:height="80%" width="80%"}
+![](https://www.hmxq.top/istio-demo/istio.png " ")
 
 ## 服务的注册、发现和调用
 
@@ -34,7 +34,7 @@ Bookinfo项目涉及4个独立的微服务：<br>
 <!-- 
 传统部署方式：
 ![](https://www.hmxq.top/istio-demo/bookinfo-noistio.svg "传统部署方式")
-<!-- 
+--> 
 
 ### 安装部署
 
@@ -71,7 +71,7 @@ Istio采用的是“主机独立进程代理”，无需注册中心（实际上
 
 Istio在k8s平台的服务发现机制：
 
-![](https://www.hmxq.top/istio-demo/istio-k8s5.png " ") {:width="600px"}
+![](https://www.hmxq.top/istio-demo/istio-k8s5.png 600)
 
 Istio仍使用与k8s完全相同的名字服务，仅对服务间的通信进行治理。以Ratings为例，在服务实现samples/bookinfo/src/ratings/ratings.js中，通过samples/bookinfo/platform/kube/bookinfo-ratings.yaml发布到k8s集群。
 
